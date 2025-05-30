@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+// API 라우트를 동적으로 설정 (정적 export와 호환)
+export const dynamic = 'force-dynamic';
+
 // API 키를 직접 할당 (이미 인코딩된 상태)
 const API_KEY = "Poc6rnzr84pjw40%2B%2FXOt70%2BNL37qgNMjsHeh1V%2FxVwVU3ioy%2FBeGDnz1TOjcbwCDnnGPT4Sbn%2FGVsshKDZ8F0Q%3D%3D";
 

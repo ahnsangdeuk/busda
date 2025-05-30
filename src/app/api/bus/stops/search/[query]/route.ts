@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSearchScore, createSearchComparator, findRelatedKeywords } from '../../../../../../utils/koreanSearch';
 
+// API 라우트를 동적으로 설정 (정적 export와 호환)
+export const dynamic = 'force-dynamic';
+
 interface BusStop {
   stopId: string;
   stopName: string;

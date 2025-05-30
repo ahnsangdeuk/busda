@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { searchStationsUnofficial } from '@/utils/unofficialAPI';
 
+// API 라우트를 동적으로 설정 (정적 export와 호환)
+export const dynamic = 'force-dynamic';
+
 // 대구시 공식 API 정보 (새로 발견된 getBasic 엔드포인트)
 const OFFICIAL_API_BASE = 'https://apis.data.go.kr/6270000/dbmsapi01';
 const BASIC_ENDPOINT = '/getBasic';

@@ -179,3 +179,6 @@ export async function GET(request: NextRequest) {
     }, { status: 500 });
   }
 }
+
+// API 라우트를 동적으로 설정 (정적 export와 호환)
+export const dynamic = 'force-dynamic';
