@@ -1,91 +1,75 @@
-# 🚌 대구 버스 정보 시스템 (BusDa)
+# 🚌 대구 버스다 (Busda)
 
-대구광역시 버스 도착정보 및 경로 검색을 위한 웹 애플리케이션입니다.
+대구광역시 실시간 버스 정보 시스템
 
-## ✨ 주요 기능
+## 🌐 배포된 사이트
 
-### 🔍 버스 검색
-- **노선번호 검색**: 101, 급행1, 달서1 등 노선번호로 직접 검색
-- **정류장 검색**: 정류장명으로 해당 정류장의 모든 버스 정보 조회
-- **인기 노선 바로가기**: 자주 이용되는 노선 버튼 제공
+**➡️ [https://ahnsangdeuk.github.io/busda](https://ahnsangdeuk.github.io/busda)**
 
-### 📱 실시간 도착정보 전광판
-- **3가지 보기 모드**:
-  - **도착시간순**: 모든 정류장을 도착시간 순으로 정렬
-  - **버스도착정보**: 상세한 버스 정보 (혼잡도, 차량번호, 잔여석 등)
-  - **전광판**: 실제 버스 정류장 전광판과 동일한 디자인
+## 🚀 배포 방법
 
-### 🗺️ 경로 검색
-- **출발지 ↔ 도착지** 검색
-- **환승 정보** 포함
-- **소요시간, 정류장 수, 요금** 정보 제공
-- **노선 타입별** 색상 구분 (급행, 간선, 지선, 달성)
+### GitHub Pages 자동 배포
+- `main` 브랜치에 푸시하면 자동으로 GitHub Actions를 통해 배포됩니다
+- 배포 상태: https://github.com/ahnsangdeuk/busda/actions
 
-## 🛠️ 기술 스택
+## 💻 개발 환경
 
-- **Frontend**: Next.js 15 (App Router), TypeScript, React
-- **Styling**: Tailwind CSS, Shadcn UI
-- **API**: 대구광역시 공식 버스정보 API
-- **상태관리**: React Hooks (useState, useEffect)
-
-## 🚀 시작하기
-
-### 1. 의존성 설치
+### 설치
 ```bash
 npm install
 ```
 
-### 2. 개발 서버 실행
+### 개발 서버 실행
 ```bash
+# 정적 버전 (GitHub Pages와 동일)
 npm run dev
+
+# API 라우트 포함 버전 (실시간 데이터)
+npm run dev:api
 ```
 
-### 3. 브라우저에서 확인
-```
-http://localhost:3000
+### 빌드
+```bash
+# 배포용 빌드 (정적 export)
+npm run build
+
+# 개발용 빌드 (API 라우트 포함)
+npm run build:dev
 ```
 
-## 📂 프로젝트 구조
+## 🔧 주요 기능
+
+- ✅ **정류소 검색**: 대구시 25,000+ 정류소 검색
+- ✅ **실시간 도착정보**: 버스 도착 예정 시간
+- ✅ **노선 검색**: 출발지-도착지 경로 검색
+- ✅ **전광판 모드**: 정류소/노선별 전광판 화면
+- ✅ **PWA 지원**: 앱처럼 설치 가능
+- ✅ **반응형 디자인**: 모바일/데스크톱 최적화
+
+## 📱 기술 스택
+
+- **Frontend**: Next.js 15, React 18, TypeScript
+- **Styling**: Tailwind CSS v4
+- **Deployment**: GitHub Pages, GitHub Actions
+- **API**: 대구시 공식 버스정보 API
+
+## 🗂️ 프로젝트 구조
 
 ```
 src/
 ├── app/                    # Next.js App Router
-│   ├── api/               # API 라우트
-│   │   └── bus/          # 버스 관련 API
-│   ├── arrival/[routeNo]/ # 노선별 도착정보 페이지
-│   ├── stop/[stopId]/     # 정류장별 도착정보 페이지
-│   ├── route-search/      # 경로 검색 페이지
-│   └── page.tsx          # 메인 페이지
+│   ├── page.tsx           # 메인 페이지
+│   ├── search/            # 정류소 검색
+│   ├── route-search/      # 노선 검색
+│   ├── arrival/[routeNo]/ # 노선별 도착정보
+│   └── stop/[stopId]/     # 정류소별 도착정보
 ├── components/            # React 컴포넌트
-│   ├── BusArrivalBoard.tsx      # 노선별 전광판
-│   ├── BusStopArrivalBoard.tsx  # 정류장별 전광판
-│   ├── RouteSearchPage.tsx      # 경로 검색
-│   └── SimpleBusSearch.tsx      # 메인 검색
-├── types/                # TypeScript 타입 정의
-└── utils/               # 유틸리티 함수
+└── utils/                # 유틸리티 함수
 ```
 
-## 🌟 주요 페이지
+## 📄 라이선스
 
-### 메인 페이지 (`/`)
-- 통합 버스 검색
-- 인기 노선 바로가기
-- 검색 기록 관리
-
-### 노선별 도착정보 (`/arrival/[routeNo]`)
-- 특정 노선의 전체 정류장 도착정보
-- 실시간 업데이트 (30초 간격)
-- 3가지 보기 모드 지원
-
-### 정류장별 도착정보 (`/stop/[stopId]`)
-- 특정 정류장의 모든 버스 도착정보
-- 도착시간순 정렬
-- 상세 버스 정보 제공
-
-### 경로 검색 (`/route-search`)
-- 출발지/도착지 기반 경로 찾기
-- 환승 정보 포함
-- 소요시간 및 요금 정보
+MIT License
 
 ## 🎨 UI/UX 특징
 
@@ -115,18 +99,6 @@ NEXT_PUBLIC_SERVICE_KEY=your_service_key_here
 - Firefox
 - Safari
 - Edge
-
-## 📄 라이선스
-
-MIT License
-
-## 👥 기여하기
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
 
 ## 📞 문의
 
