@@ -1,22 +1,56 @@
 import type { NextConfig } from "next";
 
+// 환경변수 확인 (개발 중에는 강제로 dev로 설정)
+const isDev = process.env.NEXT_CONFIG === 'dev' || process.env.NODE_ENV === 'development';
+
+console.log('🔧 Next.js Config Debug:');
+console.log('NEXT_CONFIG:', process.env.NEXT_CONFIG);
+console.log('NODE_ENV:', process.env.NODE_ENV);
+console.log('isDev:', isDev);
+
 const nextConfig: NextConfig = {
-  env: {
-    NEXT_PUBLIC_DAEGU_API_KEY: "Poc6rnzr84pjw40%2B%2FXOt70%2BNL37qgNMjsHeh1V%2FxVwVU3ioy%2FBeGDnz1TOjcbwCDnnGPT4Sbn%2FGVsshKDZ8F0Q%3D%3D",
-  },
-  output: 'export',  // GitHub Pages 배포를 위해 정적 export 활성화
-  trailingSlash: true,
-  images: {
-    unoptimized: true
-  },
-  basePath: '/busda',  // GitHub Pages 저장소 이름에 맞게 설정
-  assetPrefix: '/busda',  // 정적 자산 경로 설정
+  // 배포 환경과 개발 환경 분리
+  ...(isDev 
+    ? {
+        // 개발 환경: API 라우트 사용 가능
+        // output 없음 - 동적 라우팅과 API 라우트 사용
+        basePath: '',
+        assetPrefix: '',
+      }
+    : {
+        // 배포 환경: 정적 사이트 생성
+        output: 'export',
+        basePath: '/busda',
+        assetPrefix: '/busda',
+        trailingSlash: true,
+        images: {
+          unoptimized: true,
+        },
+      }
+  ),
+  
+  // 공통 설정
   eslint: {
-    ignoreDuringBuilds: true,  // 배포 시 ESLint 검사 무시
+    ignoreDuringBuilds: true,
   },
   typescript: {
-    ignoreBuildErrors: true,  // 배포 시 TypeScript 에러 무시
+    ignoreBuildErrors: true,
+  },
+  
+  // 실험적 기능
+  experimental: {
+    turbo: {
+      rules: {
+        '*.scss': {
+          loaders: ['sass-loader'],
+          as: '*.css',
+        },
+      },
+    },
   },
 };
+
+console.log('🚀 Final Config basePath:', nextConfig.basePath || '(none)');
+console.log('🚀 Final Config output:', nextConfig.output || '(none)');
 
 export default nextConfig;

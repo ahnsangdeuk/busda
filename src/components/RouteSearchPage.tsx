@@ -12,16 +12,35 @@ interface BusStop {
   distance?: number;
 }
 
+interface RouteStep {
+  type: string;
+  content: string;
+  time: string;
+}
+
 interface RouteResult {
   routeNo: string;
   routeType: string;
-  departureStop: string;
-  arrivalStop: string;
-  travelTime: number;
-  stopsCount: number;
-  totalDistance: number;
+  description: string;
+  estimatedTime: string;
   transferCount: number;
-  fare: number;
+  walkingTime: string;
+  totalFare: number;
+  steps: RouteStep[];
+}
+
+interface APIResponse {
+  success: boolean;
+  data: {
+    departureStopId: string;
+    arrivalStopId: string;
+    departureStopName: string;
+    arrivalStopName: string;
+    totalRoutes: number;
+    recommendedPaths: RouteResult[];
+    searchTime: string;
+  };
+  message: string;
 }
 
 export default function RouteSearchPage() {
@@ -104,9 +123,9 @@ export default function RouteSearchPage() {
         }),
       });
 
-      const result = await response.json();
-      if (result.success) {
-        setRouteResults(result.data);
+      const result: APIResponse = await response.json();
+      if (result.success && result.data.recommendedPaths) {
+        setRouteResults(result.data.recommendedPaths);
         setShowRouteInfo(true);
       } else {
         alert(result.message || '경로를 찾을 수 없습니다.');
@@ -291,6 +310,9 @@ export default function RouteSearchPage() {
       {showRouteInfo && routeResults.length > 0 && (
         <div className="max-w-4xl mx-auto p-4">
           <div className="space-y-4">
+            <h3 className="text-xl font-semibold text-gray-800 mb-4">
+              🚌 추천 경로 {routeResults.length}개
+            </h3>
             {routeResults.map((route, index) => (
               <div key={index} className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm">
                 {/* 노선 헤더 */}
@@ -308,28 +330,46 @@ export default function RouteSearchPage() {
                       </span>
                     )}
                   </div>
+                  <div className="mt-2 text-gray-600">
+                    {route.description}
+                  </div>
                 </div>
 
                 {/* 경로 정보 */}
                 <div className="p-4">
                   <div className="space-y-4">
-                    <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 bg-blue-600 rounded-full"></div>
-                      <span className="font-medium">{route.departureStop}</span>
-                    </div>
-                    
-                    <div className="ml-6 border-l-2 border-blue-200 pl-4 space-y-2">
-                      <div className="text-sm text-gray-600">
-                        소요시간: {route.travelTime}분, {route.stopsCount}개소
+                    {/* 시간 및 요금 정보 */}
+                    <div className="grid grid-cols-3 gap-4 text-center">
+                      <div>
+                        <div className="text-2xl font-bold text-blue-600">{route.estimatedTime}</div>
+                        <div className="text-sm text-gray-500">총 소요시간</div>
                       </div>
-                      <div className="text-sm text-gray-500">
-                        총 거리: {route.totalDistance}km • 요금: {route.fare}원
+                      <div>
+                        <div className="text-2xl font-bold text-green-600">{route.walkingTime}</div>
+                        <div className="text-sm text-gray-500">도보시간</div>
+                      </div>
+                      <div>
+                        <div className="text-2xl font-bold text-orange-600">{route.totalFare}원</div>
+                        <div className="text-sm text-gray-500">총 요금</div>
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 bg-red-600 rounded-full"></div>
-                      <span className="font-medium">{route.arrivalStop}</span>
+                    {/* 경로 단계 */}
+                    <div className="space-y-2">
+                      <h4 className="font-medium text-gray-800">경로 안내</h4>
+                      {route.steps.map((step, stepIndex) => (
+                        <div key={stepIndex} className="flex items-center gap-3 p-2 bg-gray-50 rounded">
+                          <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
+                            step.type === '도보' ? 'bg-green-500 text-white' : 'bg-blue-500 text-white'
+                          }`}>
+                            {stepIndex + 1}
+                          </span>
+                          <div className="flex-1">
+                            <span className="text-sm font-medium">{step.content}</span>
+                          </div>
+                          <span className="text-sm text-gray-500">{step.time}</span>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </div>

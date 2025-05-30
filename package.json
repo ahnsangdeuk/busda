@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "dev:api": "next dev --config next.config.dev.ts",
+    "dev": "set NEXT_CONFIG=dev && next dev",
+    "dev:api": "set NEXT_CONFIG=dev && next dev",
     "build": "next build",
-    "build:dev": "next build --config next.config.dev.ts",
+    "build:dev": "set NEXT_CONFIG=dev && next build",
     "start": "next start",
     "lint": "next lint",
     "export": "next build",
