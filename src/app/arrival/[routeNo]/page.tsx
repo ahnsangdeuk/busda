@@ -2,6 +2,17 @@ import { Suspense } from 'react';
 import BusArrivalBoard from '../../../components/BusArrivalBoard';
 import Link from 'next/link';
 
+// 정적 export를 위한 generateStaticParams 함수
+export async function generateStaticParams() {
+  // 일반적인 노선 번호들을 미리 생성
+  return [
+    { routeNo: '101' },
+    { routeNo: '102' },
+    { routeNo: '급행1' },
+    { routeNo: 'sample' },
+  ];
+}
+
 interface Props {
   params: Promise<{
     routeNo: string;

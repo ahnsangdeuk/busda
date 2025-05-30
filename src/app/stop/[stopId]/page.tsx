@@ -2,16 +2,22 @@ import { Suspense } from 'react';
 import BusStopArrivalBoard from '../../../components/BusStopArrivalBoard';
 import Link from 'next/link';
 
+// 정적 export를 위한 generateStaticParams 함수
+export async function generateStaticParams() {
+  // 일반적인 정류소 ID들을 미리 생성
+  return [
+    { stopId: 'sample' },
+    { stopId: 'default' },
+  ];
+}
+
 interface Props {
   params: Promise<{
     stopId: string;
   }>;
-  searchParams: Promise<{
-    stopName?: string;
-  }>;
 }
 
-function StopArrivalBoardWrapper({ stopId, stopName }: { stopId: string; stopName?: string }) {
+function StopArrivalBoardWrapper({ stopId }: { stopId: string }) {
   return (
     <div className="min-h-screen bg-gray-100">
       {/* 네비게이션 */}
@@ -25,14 +31,14 @@ function StopArrivalBoardWrapper({ stopId, stopName }: { stopId: string; stopNam
           </div>
           <div className="text-right">
             <div className="text-sm text-blue-200">실시간 도착정보</div>
-            <div className="font-bold">{stopName ? decodeURIComponent(stopName) : stopId}</div>
+            <div className="font-bold">{stopId}</div>
           </div>
         </div>
       </nav>
 
       {/* 전광판 컴포넌트 */}
       <div className="py-8">
-        <BusStopArrivalBoard stopId={stopId} stopName={stopName} />
+        <BusStopArrivalBoard stopId={stopId} />
       </div>
 
       {/* 하단 정보 */}
@@ -46,9 +52,8 @@ function StopArrivalBoardWrapper({ stopId, stopName }: { stopId: string; stopNam
   );
 }
 
-export default async function StopArrivalPage({ params, searchParams }: Props) {
+export default async function StopArrivalPage({ params }: Props) {
   const { stopId } = await params;
-  const { stopName } = await searchParams;
   
   return (
     <Suspense fallback={
@@ -59,7 +64,7 @@ export default async function StopArrivalPage({ params, searchParams }: Props) {
         </div>
       </div>
     }>
-      <StopArrivalBoardWrapper stopId={stopId} stopName={stopName} />
+      <StopArrivalBoardWrapper stopId={stopId} />
     </Suspense>
   );
 } 
