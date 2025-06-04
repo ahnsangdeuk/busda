@@ -1,16 +1,4 @@
 {
-  "version": 2,
-  "name": "busda",
-  "alias": ["busda"],
-  "buildCommand": "npm run build:dev",
-  "outputDirectory": ".next",
-  "installCommand": "npm install",
-  "framework": "nextjs",
-  "functions": {
-    "app/api/**/*.ts": {
-      "runtime": "@vercel/node"
-    }
-  },
   "env": {
     "NEXT_CONFIG": "dev"
   },
@@ -18,19 +6,5 @@
     "env": {
       "NEXT_CONFIG": "dev"
     }
-  },
-  "regions": ["icn1"],
-  "redirects": [
-    {
-      "source": "/(.*)",
-      "has": [
-        {
-          "type": "host",
-          "value": "busda.vercel.app"
-        }
-      ],
-      "destination": "https://busda.vercel.app/$1",
-      "permanent": false
-    }
-  ]
+  }
 } 
