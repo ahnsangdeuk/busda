@@ -1,24 +1,30 @@
 import type { NextConfig } from "next";
 
-// 환경변수 확인 (개발 중에는 강제로 dev로 설정)
+// 환경별 설정 분리
+const isVercel = process.env.VERCEL === '1';
 const isDev = process.env.NEXT_CONFIG === 'dev' || process.env.NODE_ENV === 'development';
+const isGitHubPages = process.env.GITHUB_ACTIONS === 'true' && !isVercel;
 
 console.log('🔧 Next.js Config Debug:');
+console.log('VERCEL:', process.env.VERCEL);
+console.log('GITHUB_ACTIONS:', process.env.GITHUB_ACTIONS);
 console.log('NEXT_CONFIG:', process.env.NEXT_CONFIG);
 console.log('NODE_ENV:', process.env.NODE_ENV);
+console.log('isVercel:', isVercel);
 console.log('isDev:', isDev);
+console.log('isGitHubPages:', isGitHubPages);
 
 const nextConfig: NextConfig = {
-  // 배포 환경과 개발 환경 분리
-  ...(isDev 
+  // 환경별 설정
+  ...(isVercel || isDev
     ? {
-        // 개발 환경: API 라우트 사용 가능
+        // Vercel 또는 개발 환경: API 라우트 사용 가능
         // output 없음 - 동적 라우팅과 API 라우트 사용
         basePath: '',
         assetPrefix: '',
       }
     : {
-        // 배포 환경: 정적 사이트 생성
+        // GitHub Pages: 정적 사이트 생성
         output: 'export',
         basePath: '/busda',
         assetPrefix: '/busda',
@@ -50,6 +56,7 @@ const nextConfig: NextConfig = {
   },
 };
 
+console.log('🚀 Environment: ', isVercel ? 'Vercel' : isGitHubPages ? 'GitHub Pages' : 'Development');
 console.log('🚀 Final Config basePath:', nextConfig.basePath || '(none)');
 console.log('🚀 Final Config output:', nextConfig.output || '(none)');
 
